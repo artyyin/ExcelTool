@@ -19,20 +19,7 @@ namespace ExcelTool
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //checkedListBox1.Items.Clear();
-            treeView1.Nodes.Clear();
-            string Dir = textBox1.Text;
-            if (folderBrowserDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                Dir = folderBrowserDialog1.SelectedPath;
-                textBox1.Text = Dir;
-            }
-            ShowFilesInTreeView(Dir);
-            Directory.SetCurrentDirectory(Dir);
-            CreateExcelTree();
-        }
+        
         private void ShowFilesInTreeView(string Dir)
         {
             string[] filelist = (new DirHelper(Dir)).GetAllFiles("*.xls");
@@ -60,23 +47,7 @@ namespace ExcelTool
                 }
             }
             return result.ToArray();
-        }
-        private void button2_Click(object sender, EventArgs e)
-        {
-            foreach (var item in GetCheckedFiles())
-            {
-                GZDataTable gzdt = GZDataTable.ImportFromExcel(item.ToString());
-                gzdt.DeleteBlankOrZeroColumns(RejectNames);
-
-                this.dataGridView1.AutoGenerateColumns = true;
-                this.dataGridView1.DataSource = gzdt;
-                this.dataGridView1.AutoResizeRows();
-
-                toolStripStatusLabel1.Text = gzdt.Rows.Count.ToString();
-                gzdt.ExportToExcel();
-            }            
-        }
-
+        }        
         
         GZDataTablesYear gz = new GZDataTablesYear();
         private void button4_Click(object sender, EventArgs e)
@@ -139,6 +110,45 @@ namespace ExcelTool
                 expended.Add(str);
             }
             return expended;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 汇总ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 选择文件ToolStripMenuItem_Click(object sender, EventArgs e)
+        {            
+            string Dir;
+            if (folderBrowserDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                treeView1.Nodes.Clear();
+                Dir = folderBrowserDialog1.SelectedPath;
+                ShowFilesInTreeView(Dir);
+                Directory.SetCurrentDirectory(Dir);
+                CreateExcelTree();
+            }                       
+        }
+
+        private void 精简ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (var item in GetCheckedFiles())
+            {
+                GZDataTable gzdt = GZDataTable.ImportFromExcel(item.ToString());
+                gzdt.DeleteBlankOrZeroColumns(RejectNames);
+
+                this.dataGridView1.AutoGenerateColumns = true;
+                this.dataGridView1.DataSource = gzdt;
+                this.dataGridView1.AutoResizeRows();
+
+                toolStripStatusLabel1.Text = gzdt.Rows.Count.ToString();
+                gzdt.ExportToExcel();
+            }  
         }
     }
 }
