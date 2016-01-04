@@ -59,7 +59,10 @@ namespace ExcelTool
                             }
                             foreach (string expandcol in expend_columns)
                             {
-                                row[month + expandcol] = mrow[expandcol];
+                                if (mrow.Table.Columns.Contains(expandcol))
+                                    row[month + expandcol] = mrow[expandcol];
+                                else
+                                    row[month + expandcol] = "";
                             }
                             break;
                         }
@@ -73,11 +76,7 @@ namespace ExcelTool
         #region 输入输出
         public void ExportToExcel()
         {
-            NPOIHelper.Export(SummaryTable, "", "", "c_汇总.xls");
-            foreach (GZDataTable gzdt in YearTables.Values)
-            {
-                gzdt.ExportToExcel();
-            }
+            NPOIHelper.Export(SummaryTable, "", "", "c_汇总.xls");            
         }
         public void ImportFromExcel(string[] filepaths, string[] RejectNames)
         {

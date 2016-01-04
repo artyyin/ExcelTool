@@ -108,7 +108,18 @@ namespace ExcelTool
                 IRow irow = sheet.GetRow(RowIndex);
                 for (int i = 0; i < irow.LastCellNum; i++)
                 {
-                    dt.Columns.Add(Trim(irow.Cells[i].ToString()));
+                    string colname = Trim(irow.Cells[i].ToString());
+                    if (dt.Columns.Contains(colname))
+                    {
+                        colname = "";
+                        int t =i;                        
+                        do
+                        {
+                            colname = (char)((t % 26) + 'A') + colname;
+                            t = t / 26;
+                        } while (t != 0);                                                
+                    }                    
+                    dt.Columns.Add(colname);                    
                 }
                 RowIndex++;
             }

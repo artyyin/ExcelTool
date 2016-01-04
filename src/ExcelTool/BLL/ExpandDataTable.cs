@@ -36,9 +36,12 @@ namespace ExcelTool
             for (int i = 0; i < Rows.Count; i++)
             {
                 for (int j = 0; j < Columns.Count; j++)
-                {
+                {                    
+                    if (Rows[i][j] == DBNull.Value) continue;
+                    string temp = Rows[i][j].ToString();                    
+                    if(string.IsNullOrWhiteSpace(temp))continue;
                     double x;
-                    if (double.TryParse(Rows[i][j].ToString(), out x))
+                    if (double.TryParse(temp, out x))
                     {
                         if (Math.Abs(x) > 1e-6)
                         {
@@ -68,7 +71,9 @@ namespace ExcelTool
                 }
                 d.Rows.Add(row);
             }
+            
             base.Clear();
+            base.Columns.Clear();
             base.Merge(d);
         }
     }

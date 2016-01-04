@@ -36,13 +36,14 @@ namespace ExcelTool
             //return NPOIHelper.Import(filepath);
         }
 
-        public void ExportToExcel()
+        public void ExportToExcel(string filename)
         {
             ExcelDataHelper excel = new ExcelDataHelper();
             DataSet ds = new System.Data.DataSet();
             ds.Tables.Add(this);
             excel.FromDataSet(ds, true);
-            excel.SaveAs("c_" + TableTile + DateStr + ".xls");
+            //excel.SaveAs("c_" + TableTile + DateStr + ".xls");
+            excel.SaveAs(filename);
             //NPOIHelper.Export(this, TableTile, DateStr, "c_" + TableTile+DateStr+".xls");
         }
     }
